@@ -1,0 +1,49 @@
+/*
+#first_article > div.body a {
+    font-size: 200%;
+}
+
+a,p {
+    color: red;
+}
+*/
+
+body {
+    font-family: Verdana, sans-serif;
+    font-size: 90%;
+    margin: 0;
+}
+
+.header {
+    background-image: url('../images/hacker_background.png');
+    background-repeat: no-repeat;
+    background-color: black;
+    background-size: 800px auto;
+
+    font-family: 'Courier New', monospace;
+    color: #808080;
+}
+
+.header > .title {
+    margin-top: 2.5rem;
+    margin-left: 1rem;
+    font-size: 300%;
+}
+
+.menu {
+    position: absolute;
+    right: 0;
+    margin-right: 2rem;
+}
+
+.menu li {
+    display: inline-block;
+    margin-right: 3rem;
+}
+
+.menu li > a {
+    font-family: monospace;
+    color: #808080;
+    font-size: 150%;
+    padding: 1rem;
+}
