@@ -1,3 +1,41 @@
 body {
-    color: red;
+    grid-template-rows: 18rem auto auto auto 6rem;
+}
+
+/* header */
+
+.header .title {
+    font-size: 175%;
+    margin-bottom: 0;
+}
+
+.menu {
+    margin-top: 0.5rem;
+}
+
+.menu li {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.subscribe {
+    margin-top: 9rem;
+}
+
+.button > a {
+    font-size: 125%;
+    padding: 0.5rem;
+}
+
+/* content */
+
+.left, .right, .tags {
+    grid-column: 1 / span 3;
+}
+
+/* footer */
+
+.footer .social img {
+    width: 1.5rem;
+    height: auto;
 }
