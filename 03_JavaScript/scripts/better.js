@@ -58,8 +58,46 @@ function wait(howLong = 0) {
     });
 }
 
+async function divideLater(a, b, delay) {
+    return new Promise((success,failure) => {
+        if (b == 0) {
+            failure('Cannot divide by zero');
+        } else {
+            setTimeout(() => {
+                success(a / b);
+            }, delay);
+        }
+    });
+}
+
 async function testAsync() {
-    let promise = wait(5000);
-    console.log(promise);
-    console.log('wait() has ended');
+    // let promise = wait(5000);
+    // console.log('wait() has returned');
+    // console.log(promise);
+    // promise.then(() => {
+    //     console.log("wait()'s promise has been fulfilled");
+    // });
+    // console.log('When does this print?');
+
+    let promise = wait(1000).then(() => {
+        console.log("wait()'s promise has been fulfilled");
+    });
+
+    // divideLater(15, 3, 1000).then((result) => {
+    //     console.log('first divide, result: ' + result);
+    // }).catch((errorMessage) => {
+    //     console.log('first divide, error: ' + errorMessage);
+    // });
+
+    // divideLater(15, 0, 1000).then((result) => {
+    //     console.log('second divide, result: ' + result);
+    // }).catch((errorMessage) => {
+    //     console.log('second divide, error: ' + errorMessage);
+    // });
+
+    // specifically for sequential async calls
+    let result1 = await divideLater(15, 3, 1000);
+    console.log('result1 = ' + result1);
+    let result2 = await divideLater(15, 5, 1000);
+    console.log(`result2 = ${result2}`);
 }

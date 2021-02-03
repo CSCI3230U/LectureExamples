@@ -1,7 +1,7 @@
 /* CSCI 3230U - JavaScript */
 
 window.onload = function() {
-   allPs = document.getElementsByTagName('p');
+   let allPs = document.getElementsByTagName('p');
    select(allPs[0]);
 
    resetButton = document.getElementById('resetButton');
@@ -27,6 +27,7 @@ window.onload = function() {
 
    firstButton = document.getElementById('firstButton');
    firstButton.onclick = function() {
+      // console.log('firstChild: ' + currentElement.firstChild);
       select(currentElement.firstElementChild);
    };
 
@@ -49,8 +50,8 @@ window.onload = function() {
       newPlaceName = newPlaceField.value;
 
       // create a new #text node
-      content = document.createTextNode(newPlaceName);
-      newListItem = document.createElement('li');
+      let content = document.createTextNode(newPlaceName);
+      let newListItem = document.createElement('li');
       newListItem.appendChild(content);
 
       coolPlaces = document.getElementById('coolPlaces');
