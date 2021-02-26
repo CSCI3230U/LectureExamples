@@ -38,4 +38,21 @@ window.onload = function() {
             lastNameField.setAttribute('value', person.lastName);
         });
     };
+
+    button = document.getElementById('xmlButton');
+    button.onclick = function() {
+        fetch('test_data.xml')
+        .then((response) => response.text())
+        .then(function(rawXML) {
+            const parser = new window.DOMParser();
+            const xmlDocument = parser.parseFromString(rawXML, 'text/xml');
+
+            let firstNameField = document.getElementById('xmlFirstName');
+            let lastNameField = document.getElementById('xmlLastName');
+
+            let people = xmlDocument.getElementsByTagName('person');
+            firstNameField.setAttribute('value', people[1].getAttribute('firstName'));
+            lastNameField.setAttribute('value', people[1].getAttribute('lastName'));
+        });
+    };
 };

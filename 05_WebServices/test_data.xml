@@ -3,4 +3,7 @@
   <person firstName="Akshai"
           lastName="Nayyar"
           age="24" />
+  <person firstName="Brenda"
+          lastName="Jones"
+          age="21" />
 </results>
