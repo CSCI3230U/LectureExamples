@@ -4,7 +4,7 @@ $(document).ready(function() {
    // Get a google api key here:  https://console.cloud.google.com/apis/dashboard
    key = 'PUT YOUR API KEY HERE';
 
-   $('#searchButton').click(function() {
+   $('#searchButton').click(function() {  
       query = $('#query').val();
       url = `https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&q=${query}&key=${key}`;
       maxVideos = 5;
