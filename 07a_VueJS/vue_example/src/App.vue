@@ -9,9 +9,9 @@ import Header from "@/components/Header.vue";
 
 export default {
   name: 'home',
-  components: [
-    Header
-  ],
+  components: {
+    'Header': Header
+  },
 };
 </script>
 
