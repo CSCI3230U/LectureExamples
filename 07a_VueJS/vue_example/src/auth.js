@@ -2,14 +2,6 @@ import axios from 'axios';
 
 export default {
    login(username, password, callback) {
-      /*
-      if (localStorage.token) {
-         callback({authenticated: false});
-         this.onLoginStatusChanged(true);
-         return;
-      }
-      */
-
       authenticationRequest(username, password, (res) => {
          if (res.authenticated) {
             localStorage.token = res.token;
@@ -37,7 +29,7 @@ export default {
 }
 
 function authenticationRequest(username, password, callback) {
-   axios.get('https://jsonplaceholder.typicode.com/users?username=' + username + '&email=' + password)
+   axios.get(`https://jsonplaceholder.typicode.com/users?username=${username}&email=${password}`)
       .then((result) => {
          if (result.data.length > 0) {
             callback({
