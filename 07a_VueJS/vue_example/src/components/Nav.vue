@@ -1,6 +1,7 @@
 <template>
 <div id="nav">
     <router-link to="/">Home</router-link>
+    <router-link to="/contacts">Contacts</router-link>
     <router-link to="/about">About</router-link>
     <router-link v-if="!loggedIn" to="/login">Log In</router-link>
     <a v-if="loggedIn" v-on:click="logout">Log Out</a>
