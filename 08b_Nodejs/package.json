@@ -1,0 +1,14 @@
+{
+  "name": "08b_nodejs_basic",
+  "version": "0.9.0",
+  "description": "Basic Node.js stuff",
+  "main": "basic.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Randy Fortier",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
