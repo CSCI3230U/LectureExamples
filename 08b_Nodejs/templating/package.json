@@ -1,0 +1,17 @@
+{
+  "name": "templating",
+  "version": "1.0.0",
+  "description": "",
+  "main": "templating.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Randy J Fortier",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "pug": "^3.0.2",
+    "uuid": "^8.3.2"
+  }
+}

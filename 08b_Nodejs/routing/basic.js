@@ -1,11 +1,32 @@
 let express = require('express');
+let session = require('express-session');
+const { v4: uuidv4 } = require('uuid');
 let app = express();
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}));
+app.use(session({
+    genid: () => uuidv4(),
+    resave: false,
+    saveUninitialized: false,
+    // cookie: {secure: true},
+    secret: 'apollo slackware propositional expectations',
+}));
 
 app.get('/', function(request, response) {
     response.send('Welcome to our page!');
+});
+
+app.get('/secret', function(request, response) {
+    if (request.session.username) {
+        response.send('Meet at the place at the correct time');
+    } else {
+        response.send('Unauthorized access!');
+    }
+});
+
+app.get('/logout', function(request, response) {
+    request.session.username = '';
 });
 
 app.use('/html', function(request, response, next) {
@@ -25,6 +46,12 @@ app.get('/hello', function(request, response) {
     response.send(`Hello, ${name}!`);
 });
 
+app.get('/ciao/:name/:age', function(request, response) {
+    let name = request.params.name;
+    let age = request.params.age;
+    response.send(`Ciao, ${name}!`);  
+});
+
 app.get('/cats', function(request, response) {
     // not necessary, these can be served statically (see dogs.html)
     response.sendFile(__dirname + '/cats.html');
@@ -37,7 +64,14 @@ app.get('/processLogin', function(request, response) {
 
 app.post('/processLogin', function(request, response) {
     console.log(request.body);
-    response.send('Login successful');
+    if (request.body.username === 'admin' && 
+        request.body.password === 'opensesame') {
+        
+        request.session.username = request.body.username;
+        response.send('Login successful');
+    } else {
+        response.send('Login incorrect');
+    }
 });
 
 app.set('port', process.env.PORT || 3000);

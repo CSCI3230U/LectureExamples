@@ -1,0 +1,14 @@
+extends toplevel 
+block content 
+    h1= title 
+
+    div(class="error")= errorMessage 
+
+    form(method="post", action="/processLogin", class="form")
+        input(type="text",
+              id="username",
+              name="username",
+              placeholder="Username",
+              class="control row1")
+
+        button(class="control row3") Log In
