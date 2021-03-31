@@ -14,4 +14,15 @@ block content
                 td= student.sid 
                 td= student.firstName 
                 td= student.lastName 
-                
+
+    form(action='/addOrUpdateStudent', method='post')
+        div 
+            input(type='text', name='sid', placeholder='Student Id')
+        div 
+            input(type='text', name='firstName', placeholder='First name')
+        div 
+            input(type='text', name='lastName', placeholder='Last name')
+        div 
+            input(type='text', name='gpa', placeholder='GPA')
+        div 
+            button Add or Update

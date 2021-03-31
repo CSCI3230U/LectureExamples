@@ -1,16 +1,18 @@
 {
-  "name": "templating",
+  "name": "savingdata",
   "version": "1.0.0",
   "description": "",
-  "main": "templating.js",
+  "main": "savingdata.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Randy J Fortier",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "mongoose": "^5.12.2",
     "pug": "^3.0.2",
     "uuid": "^8.3.2"
   }

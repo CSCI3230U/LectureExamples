@@ -3,6 +3,9 @@ let app = express();
 
 const session = require('express-session');
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
+
+const model = require('./model/model.js');
 
 // middleware
 app.use(express.static('public'));
@@ -103,16 +106,55 @@ app.get('/logout', function(request, response) {
 });
 
 app.get('/students', function(request, response) {
-    let studentList = [
-        {sid: '100000001', firstName: 'Philip', lastName: 'Fry'},
-        {sid: '100000002', firstName: 'Taranga', lastName: 'Leela'},
-        {sid: '100000003', firstName: 'Bender', lastName: 'Rodriguez'},
-    ];
-    response.render('studentList', {
-        title: 'Class List',
-        students: studentList,
-        username: request.session.username
+    reloadStudentData(request, response);
+});
+
+function reloadStudentData(request, response) {
+    model.Student.find().then(function(studentList) {
+        response.render('studentList', {
+            title: 'Class List',
+            students: studentList,
+            username: request.session.username
+        });
     });
+}
+
+app.post('/addOrUpdateStudent', function(request, response) {
+    let studentData = {
+        sid: request.body.sid,
+        firstName: request.body.firstName,
+        lastName: request.body.lastName,
+        gpa: request.body.gpa,
+    };
+    model.Student.find({sid: request.body.sid}).then(function(studentList) {
+        if (studentList.length > 0) {
+            // there is already a student with that sid
+            model.Student.updateOne(
+                {sid: request.body.sid},
+                studentData,
+                function(error, numAffected) {
+                    if (error || numAffected != 1) {
+                        console.error('Unable to update student:', error);
+                        reloadStudentData(request, response);
+                    } else {
+                        reloadStudentData(request, response);
+                    }
+                }
+                );
+        } else {
+            // there is no student with that sid
+            let newStudent = new model.Student(studentData);
+            newStudent.save(function(error) {
+                if (error) {
+                    console.error('Unable to add student:', error);
+                } else {
+                    console.log('Student added');
+                    reloadStudentData(request, response);
+                }
+            });
+        }
+    });
+
 });
 
 app.set('port', process.env.PORT || 3000);
