@@ -1,0 +1,17 @@
+/* CSCI 3230U - Socket.io */
+{
+  "name": "11b_socketio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "socketio.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Randy J. Fortier",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0",
+    "socketio": "^1.0.0"
+  }
+}

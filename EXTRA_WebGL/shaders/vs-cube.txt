@@ -1,0 +1,14 @@
+attribute vec3 aVertexPosition;
+attribute vec3 aVertexNormal;
+
+//uniform mat4 uMMatrix;
+uniform mat4 matrix;
+
+varying vec4 vWorldSpaceNormal;
+varying vec4 vcolour;
+
+void main() {
+	gl_Position = matrix * vec4(aVertexPosition, 1.0);
+	vWorldSpaceNormal = matrix * vec4(aVertexNormal, 0.0);
+	vcolour = vec4(aVertexPosition.x+0.5, aVertexPosition.y+0.5, aVertexPosition.z+0.5, 1.0);
+}

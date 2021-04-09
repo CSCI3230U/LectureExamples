@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Animation Example (Example 4)</title>
+	<script type="text/javascript" src="scripts/MV.js"></script>
+	<script type="text/javascript" src="scripts/utils.js"></script>
+	<script type="text/javascript" src="scripts/vector-math.js"></script>
+	<script type="text/javascript" src="scripts/simple-matrix.js"></script>
+	<script type="text/javascript" src="scripts/mesh.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas" width="200" height="200"></canvas><br />
+    
+	Scale: 
+	X:<input id="xScale" type="range" value="0" min="-2" max="2" />
+	Y:<input id="yScale" type="range" value="0" min="-2" max="2" />
+	Z:<input id="zScale" type="range" value="0" min="-2" max="2" />
+	<br />
+
+	Translate: 
+	X:<input id="xTrans" type="range" min="-10.0" max="10.0" />
+	Y:<input id="yTrans" type="range" min="-10.0" max="10.0" />
+	Z:<input id="zTrans" type="range" min="-10.0" max="10.0" />
+	<br />
+
+	Rotate:
+	<input id="xAxis" type="checkbox" />X
+    <input id="yAxis" type="checkbox" />Y
+    <input id="zAxis" type="checkbox" />Z
+	<br />
+    
+    <script type="text/javascript">
+	  // get access to the canvas' GL context
+	  var canvas = document.getElementById('canvas');
+      var gl = canvas.getContext('experimental-webgl');
+
+      gl.enable(gl.DEPTH_TEST);
+
+      var xAxis = false;
+      var yAxis = false;
+      var zAxis = false;
+	  
+	  var rotate = true;
+	  
+	  var xTrans = 0.0;
+	  var yTrans = 0.0;
+	  var zTrans = 0.0;
+	  
+	  var xScale = 1.0;
+	  var yScale = 1.0;
+	  var zScale = 1.0;
+	  
+	  document.getElementById("xAxis").onclick = function() { 
+         xAxis = document.getElementById('xAxis').checked;
+      };
+	  
+	  document.getElementById("yAxis").onclick = function() { 
+         yAxis = document.getElementById('yAxis').checked;
+      };
+	  
+	  document.getElementById("zAxis").onclick = function() { 
+         zAxis = document.getElementById('zAxis').checked;
+      };
+	  
+	  document.getElementById("xTrans").onchange = function() { 
+         xTrans = document.getElementById('xTrans').value / 10.0;
+      };
+	  	  
+	  document.getElementById("yTrans").onchange = function() { 
+         yTrans = document.getElementById('yTrans').value / 10.0;
+      };
+	  	  
+	  document.getElementById("zTrans").onchange = function() { 
+         zTrans = document.getElementById('zTrans').value / 10.0;
+      };
+	  	  
+	  document.getElementById("xScale").onchange = function() { 
+         index = parseInt(document.getElementById('xScale').value) + 2;
+		 scales = [0.5, 0.75, 1.0, 1.5, 2.0];
+		 xScale = scales[index];
+      };
+
+	  document.getElementById("yScale").onchange = function() { 
+         index = parseInt(document.getElementById('yScale').value) + 2;
+		 scales = [0.5, 0.75, 1.0, 1.5, 2.0];
+		 yScale = scales[index];
+      };
+
+	  document.getElementById("zScale").onchange = function() { 
+         index = parseInt(document.getElementById('zScale').value) + 2;
+		 scales = [0.5, 0.75, 1.0, 1.5, 2.0];
+		 zScale = scales[index];
+      };
+
+	  var thetaX = 0;
+	  var thetaY = 0;
+	  var thetaZ = 0;
+
+      var mesh = new Mesh();
+      mesh.load('meshes/cube.json', render);
+	  
+	  function render() {
+	     gl.clearColor(0.25, 0.25, 0.25, 1.0);
+         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		 
+		 var translate = [xTrans, yTrans, zTrans];
+		 var scale = [xScale, yScale, zScale];
+		 var rotate = [thetaX, thetaY, thetaZ];
+		 
+		 var matrix = generateTransformMatrix(canvas.width, canvas.height, translate, scale, rotate);
+
+         var matrixIndex = gl.getUniformLocation(mesh.programs[0], 'matrix');
+         gl.uniformMatrix4fv(matrixIndex, false, matrix);
+
+         mesh.draw();
+
+         requestAnimationFrame(render);
+
+		 if (rotate) {
+		    if (xAxis) {
+		       thetaX += 0.01;
+		    }
+		    if (yAxis) {
+		       thetaY += 0.01;
+		    }
+		    if (zAxis) {
+		       thetaZ += 0.01;
+		    }
+		 }
+      }
+
+    </script>
+  </body>
+</html>

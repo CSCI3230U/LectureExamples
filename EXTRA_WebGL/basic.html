@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basic WebGL Example (Example 1)</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script type="text/javascript">
+	  // get access to the canvas' GL context
+	  var c = document.getElementById('canvas');
+      var gl = c.getContext('experimental-webgl');
+	  
+	  // fill the canvas a solid colour
+      gl.clearColor(0.25, 0.25, 0.25, 1.0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+	  // create a buffer for our vertex data
+      var vertexPosBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexPosBuffer);
+      var vertices = [-0.5, -0.5, 0.5, -0.5, 0, 0.5];
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	  
+	  // create a vertex shader
+      var vshader = 'attribute vec2 position;' +
+                    'void main() { ' +
+					'   gl_Position = vec4(position, 0.0, 1.0); ' +
+					'}';
+
+	  // create a fragment shader
+      var fshader = 'precision mediump float;' +
+	                'void main() { ' +
+					'   gl_FragColor = vec4(0.31, 0.50, 0.75, 1.0);' +
+					'}';
+
+      // apply our shaders by creating a program with the shader code
+      var program = createProgram(vshader,fshader);
+	  gl.useProgram(program);
+	  
+	  // pass the argument 'pos' to the vertex shader
+	  program.vertexPosAttrib = gl.getAttribLocation(program, 'position');
+	  gl.enableVertexAttribArray(program.vertexPosAttrib);
+	  gl.vertexAttribPointer(program.vertexPosAttrib, 2, gl.FLOAT, false, 0, 0);
+	  
+	  // draw our shape
+	  gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      function createShader(code, type) {
+         var shader = gl.createShader(type);
+         gl.shaderSource(shader, code);
+         gl.compileShader(shader);
+         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            throw gl.getShaderInfoLog(shader);
+         }
+         return shader;
+      }
+
+      function createProgram(vshaderCode, fshaderCode) {
+         var program = gl.createProgram();
+         var vshader = createShader(vshaderCode, gl.VERTEX_SHADER);
+         var fshader = createShader(fshaderCode, gl.FRAGMENT_SHADER);
+         gl.attachShader(program, vshader);
+         gl.attachShader(program, fshader);
+         gl.linkProgram(program);
+         if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            throw gl.getProgramInfoLog(program);
+         }
+         return program;
+      }
+    </script>
+  </body>
+</html>

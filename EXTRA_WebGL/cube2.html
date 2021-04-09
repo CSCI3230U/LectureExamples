@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cube Example (Example 3)</title>
+	<script type="text/javascript" src="scripts/MV.js"></script>
+	<script type="text/javascript" src="scripts/utils.js"></script>
+	<script id='vshader' type='x-shader'>
+		attribute vec3 position;
+		attribute vec4 colour;
+		varying vec4 vcolour;
+		void main() {
+			vcolour = colour;
+			gl_Position = vec4(position, 1.0);
+		}
+	</script>
+	<script id='fshader' type='x-shader'>
+		precision mediump float;
+		varying vec4 vcolour;
+		void main() {
+			gl_FragColor = vcolour;
+		}
+	</script>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script type="text/javascript">
+	  // get access to the canvas' GL context
+	  var c = document.getElementById('canvas');
+      var gl = c.getContext('experimental-webgl');
+	  
+      gl.enable(gl.DEPTH_TEST);
+
+	  // fill the canvas a solid colour
+      gl.clearColor(0.25, 0.25, 0.25, 1.0);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      // vertex coordinates
+      var vertices = [vec4(-0.5, -0.5,  0.5, 1.0),
+                      vec4(-0.5,  0.5,  0.5, 1.0), 
+                      vec4( 0.5,  0.5,  0.5, 1.0),
+                      vec4( 0.5, -0.5,  0.5, 1.0),
+                      vec4(-0.5, -0.5, -0.5, 1.0),
+                      vec4(-0.5,  0.5, -0.5, 1.0),
+                      vec4( 0.5,  0.5, -0.5, 1.0),
+                      vec4( 0.5, -0.5, -0.5, 1.0)
+                     ];
+
+      // vertex colours
+	  var vertexColours = [[0.0, 0.0, 0.0, 1.0],  // black
+                           [1.0, 0.0, 0.0, 1.0],  // red
+                           [1.0, 1.0, 0.0, 1.0],  // yellow
+                           [0.0, 1.0, 0.0, 1.0],  // green
+                           [0.0, 0.0, 1.0, 1.0],  // blue
+                           [1.0, 0.0, 1.0, 1.0],  // magenta
+                           [0.0, 1.0, 1.0, 1.0],  // cyan
+                           [1.0, 1.0, 1.0, 1.0]   // white
+                          ];
+
+      // these will store the actual vertices and colours we're going to use
+      points = []
+	  colours = []
+	  numVertices = 36; // 6 per side of the cube
+	  
+	  // generate the points and colours for our cube using vertex indices
+	  quadWithVertexColour(1, 0, 3, 2); // back, black
+      quadWithVertexColour(2, 3, 7, 6); // right side, red
+      quadWithVertexColour(3, 0, 4, 7); // bottom, yellow
+      quadWithVertexColour(6, 5, 1, 2); // top, green
+      quadWithVertexColour(4, 5, 6, 7); // front, blue
+      quadWithVertexColour(5, 4, 0, 1); // left side, magenta
+	  
+	  // create a vertex shader
+      var vshader = document.getElementById('vshader').textContent;
+      var fshader = document.getElementById('fshader').textContent;
+
+      // apply our shaders by creating a program with the shader code
+      var program = createProgram(vshader,fshader);
+	  gl.useProgram(program);
+	  
+      // create a colour buffer
+      var cBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, flatten(colours), gl.STATIC_DRAW);
+
+	  // map the colour data to a vertex shader attribute (called 'colour')
+      var vColour = gl.getAttribLocation(program, "colour");
+      gl.vertexAttribPointer(vColour, 4, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(vColour);
+
+	  // create a vertex buffer
+      var vBuffer = gl.createBuffer(); 
+      gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW); 
+	  vBuffer.itemSize = 4;
+
+	  // map the vertex data to a vertex shader attribute (called 'position')
+      var vPosition = gl.getAttribLocation(program, "position"); 
+      gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(vPosition);
+	  
+	  // draw our shape
+      gl.drawArrays(gl.TRIANGLES, 0, numVertices);
+    </script>
+  </body>
+</html>

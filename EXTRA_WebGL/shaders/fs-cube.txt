@@ -1,0 +1,8 @@
+precision mediump float;
+
+varying vec4 vWorldSpaceNormal;
+varying vec4 vcolour;
+
+void main() {
+   gl_FragColor = vcolour;
+}

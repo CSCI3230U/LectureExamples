@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- CSCI 3230U - Socket.io -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Socket.io</title>
+    <script type="text/javascript" src="/socketio/socket.io.js"></script>
+    <script>
+      var socket = io();
+
+      window.onload = function() {
+        let sendButton = document.getElementById('btnSend');
+        let usernameField = document.getElementById('username');
+        let messageField = document.getElementById('message');
+        sendButton.onclick = function() {
+          socket.emit('send message', {
+            username: usernameField.value,
+            message: messageField.value
+          });
+        };
+      };
+
+      socket.on('broadcast message', function(data) {
+        console.log(data.username + ': ' + data.message);
+        let messages = document.getElementById('messages');
+        messages.innerHTML += '<div>' + data.username + ': ' + data.message + '</div>';
+      });
+    </script>
+</head>
+<body>
+    <div id="messages">
+    </div>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="text" id="message" placeholder="Message" />
+    <button id="btnSend">Send</button>
+</body>
+</html>
