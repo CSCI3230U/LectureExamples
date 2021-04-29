@@ -1,13 +1,13 @@
-/* CSCI 3230U - Socket.io */
-
-let express = require('express');
-let app = express();
-let http = require('http').createServer(app);
-let io = require('socket.io')(http);
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 app.use(express.static('public'));
 
-io.on('connection', function(socket) {
+io.on('connection', (socket) => {
     console.log('user connected');
 
     socket.on('disconnect', function() {
@@ -21,6 +21,6 @@ io.on('connection', function(socket) {
 });
 
 app.set('port', process.env.PORT || 3000);
-http.listen(app.get('port'), function() {
-	console.log('Server listening on port ' + app.get('port'));
+server.listen(app.get('port'), () => {
+    console.log(`Listening on port ${app.get('port')}`);
 });
